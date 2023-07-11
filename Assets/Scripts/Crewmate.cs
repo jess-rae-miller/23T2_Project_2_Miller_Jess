@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Crewmate : MonoBehaviour
 {
@@ -10,18 +12,27 @@ public class Crewmate : MonoBehaviour
 
     public int maxCrew = 10;
 
-    //Human hobbies
+    // Human hobbies
     private string[] humanHobbies = { "Reading", "Writing", "Painting", "Sport", "Cooking", "Film" };
-    //Alien hobbies
+    // Alien hobbies
     private string[] alienHobbies = { "Assimilating", "Synthesizing", "Breathing", "Smelling", "Taxidermy", "Fascism" };
 
     private System.Random rnd = new System.Random();
-    //Human names
-    private string[] humanFirstNames = { "Emma", "Liam", "Olivia", "Noah", "Ava", "Isabella", "Sophia", "Mia", "Charlotte", "Amelia", "Harper", "Michael", "Jacob", "Emily", "Elizabeth", "Mila", "Ella", "Avery", "Sofia", "Camila" };
-    private string[] humanLastNames = { "Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson", "Martinez", "Anderson", "Taylor", "Thomas", "Hernandez", "Moore", "Martin", "Jackson", "Thompson", "White" };
+    // Human names
+    private string[] humanFirstNames = { "Emma", "Liam", "Olivia", "Peter", "Ava", "Isabella", "Sophia", "Mia", "Charlotte", "Amelia", "Harper", "Michael", "Jacob", "Emily", "Elizabeth", "Mila", "Ella", "Avery", "Ron", "Camilla" };
+    private string[] humanSurnames = { "Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson", "Martinez", "Anderson", "Taylor", "Thomas", "Hernandez", "Moore", "Martin", "Jackson", "Thompson", "White" };
+
+    // Alien names
+    private string[] alienFirstNames = { "Enma", "LiAm", "Oilvia", "peter", "Ava", "IsabeIIa", "Soophia", "Mia", "Sharlotte", "AmeIia", "Harper", "Michael", "Jacob", "EmiIy", "Elizabeth", "MiLa", "EIla", "avery", "R0n", "Chamilla" };
+    private string[] alienSurnames = { "$mith", "jonson", "Milliams", "8rown", "J0nes", "Willer", "Davis", "6arcia", "Rodriguez", "Wilzon", "Martines", "Ander$on", "TayIor", "Thomas", "Hernanbez", "More", "Martin", "Jackson", "Thompson", "Whife" };
+
+    public Image imageDisplay; // Reference to the Image component for displaying the random image
 
     // Start is called before the first frame update
-    void Start() => StartGame();
+    void Start()
+    {
+        StartGame();
+    }
 
     private void StartGame()
     {
@@ -33,10 +44,10 @@ public class Crewmate : MonoBehaviour
 
     private void GenerateCrewmate()
     {
-        _ = GenerateRandomName();
+        name = GenerateRandomName();
         string hobby;
         // 1/4 chance of being an alien????
-        bool isAlien = Random.value < 0.25f; 
+        isAlien = Random.value < 0.25f;
 
         if (isAlien)
         {
@@ -46,6 +57,9 @@ public class Crewmate : MonoBehaviour
         {
             hobby = GetRandomHobbyFrom(humanHobbies);
         }
+
+        // Display the name and hobby along with the random image
+        DisplayCharacterInfo();
     }
 
     private string GetRandomHobbyFrom(string[] hobbies)
@@ -58,14 +72,41 @@ public class Crewmate : MonoBehaviour
     {
         if (isAlien)
         {
-            string newName = humanFirstNames[rnd.Next(0, humanFirstNames.Length)] + humanLastNames[rnd.Next(0, maxValue: humanLastNames.Length)];
+            string newName = alienFirstNames[rnd.Next(0, alienFirstNames.Length)] + alienSurnames[rnd.Next(0, alienSurnames.Length)];
+            return newName;
+        }
+        else
+        {
+            string newName = humanFirstNames[rnd.Next(0, humanFirstNames.Length)] + humanSurnames[rnd.Next(0, humanSurnames.Length)];
             return newName;
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void DisplayCharacterInfo()
     {
-        
+        // Load and display the random image
+        string randomImagePath = GetRandomImagePath();
+        Texture2D randomTexture = LoadTextureFromFile(randomImagePath);
+        Sprite randomSprite = Sprite.Create(randomTexture, new Rect(0, 0, randomTexture.width, randomTexture.height), Vector2.zero);
+        imageDisplay.sprite = randomSprite;
+
+        // Output the name and hobby in the console
+        Debug.Log("Name: " + name + ", Hobby: " + hobby);
+    }
+
+    private string GetRandomImagePath()
+    {
+        string spritesFolderPath = "Sprites/Crewmates"; // Modify this if necessary
+        string[] imagePaths = Directory.GetFiles(spritesFolderPath, "*.png"); // Modify the file extension if using a different image format
+        string randomImagePath = imagePaths[Random.Range(0, imagePaths.Length)];
+        return randomImagePath;
+    }
+
+    private Texture2D LoadTextureFromFile(string filePath)
+    {
+        byte[] fileData = File.ReadAllBytes(filePath);
+        Texture2D texture = new Texture2D(2, 2);
+        texture.LoadImage(fileData);
+        return texture;
     }
 }

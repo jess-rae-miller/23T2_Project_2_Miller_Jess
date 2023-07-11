@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class Ship : MonoBehaviour
 {
-    public int maxCrew = 10;
     // Start is called before the first frame update
     void Start()
     {
-        
+        void NewTurn();
+    }
+
+    private void NewTurn()
+    {
+
     }
 
     // Update is called once per frame
