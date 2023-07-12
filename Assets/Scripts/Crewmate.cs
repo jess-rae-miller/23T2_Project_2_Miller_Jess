@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Crewmate : MonoBehaviour
 {
-    [SerializeField] public new string name;
+    [SerializeField] public string crewmateName;
     [SerializeField] public string hobby;
     [SerializeField] public bool isAlien;
 
@@ -23,31 +24,23 @@ public class Crewmate : MonoBehaviour
     private string[] humanSurnames = { "Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson", "Martinez", "Anderson", "Taylor", "Thomas", "Hernandez", "Moore", "Martin", "Jackson", "Thompson", "White" };
 
     // Alien names
-    private string[] alienFirstNames = { "Enma", "LiAm", "Oilvia", "peter", "Ava", "IsabeIIa", "Soophia", "Mia", "Sharlotte", "AmeIia", "Harper", "Michael", "Jacob", "EmiIy", "Elizabeth", "MiLa", "EIla", "avery", "R0n", "Chamilla" };
-    private string[] alienSurnames = { "$mith", "jonson", "Milliams", "8rown", "J0nes", "Willer", "Davis", "6arcia", "Rodriguez", "Wilzon", "Martines", "Ander$on", "TayIor", "Thomas", "Hernanbez", "More", "Martin", "Jackson", "Thompson", "Whife" };
+    private string[] alienFirstNames = { "Enma", "LiAm", "Oilvia", "peter", "Avva", "IsabeIIa", "Soophia", "MIa", "Sharlotte", "AmeIia", "Harber", "Micheal", "iacob", "EmiIy", "elizabeth", "MiLa", "EIla", "avery", "R0n", "Chamilla" };
+    private string[] alienSurnames = { "$mith", "jonson", "Milliams", "8rown", "J0nes", "Willer", "Davis", "6arcia", "Bodriguez", "Wilzon", "Martines", "Ander$on", "TayIor", "Fhomas", "Hernanbez", "More", "Martin", "Jackson", "Thompson", "Whife" };
 
-    public Image imageDisplay; // Reference to the Image component for displaying the random image
 
     // Start is called before the first frame update
     void Start()
     {
-        StartGame();
+        GenerateCrewmateProperties();
     }
 
-    private void StartGame()
+    private void GenerateCrewmateProperties()
     {
-        while (maxCrew < 10)
-        {
-            GenerateCrewmate();
-        }
-    }
-
-    private void GenerateCrewmate()
-    {
-        name = GenerateRandomName();
-        string hobby;
         // 1/4 chance of being an alien????
         isAlien = Random.value < 0.25f;
+
+        crewmateName = GenerateRandomName();
+        
 
         if (isAlien)
         {
@@ -58,8 +51,6 @@ public class Crewmate : MonoBehaviour
             hobby = GetRandomHobbyFrom(humanHobbies);
         }
 
-        // Display the name and hobby along with the random image
-        DisplayCharacterInfo();
     }
 
     private string GetRandomHobbyFrom(string[] hobbies)
@@ -72,41 +63,42 @@ public class Crewmate : MonoBehaviour
     {
         if (isAlien)
         {
-            string newName = alienFirstNames[rnd.Next(0, alienFirstNames.Length)] + alienSurnames[rnd.Next(0, alienSurnames.Length)];
-            return newName;
+            return alienFirstNames[rnd.Next(0, alienFirstNames.Length)] + " " + alienSurnames[rnd.Next(0, alienSurnames.Length)];
+            
         }
         else
         {
-            string newName = humanFirstNames[rnd.Next(0, humanFirstNames.Length)] + humanSurnames[rnd.Next(0, humanSurnames.Length)];
-            return newName;
+            return humanFirstNames[rnd.Next(0, humanFirstNames.Length)] + " " +  humanSurnames[rnd.Next(0, humanSurnames.Length)];
         }
     }
 
-    private void DisplayCharacterInfo()
+    public void AcceptCrewmateButton()
     {
-        // Load and display the random image
-        string randomImagePath = GetRandomImagePath();
-        Texture2D randomTexture = LoadTextureFromFile(randomImagePath);
-        Sprite randomSprite = Sprite.Create(randomTexture, new Rect(0, 0, randomTexture.width, randomTexture.height), Vector2.zero);
-        imageDisplay.sprite = randomSprite;
+        if (isAlien)
+        {
+            hobby = GetRandomHobbyFrom(humanHobbies);
+            //destroy any human crewmates with the same hobby
+        }
+        else
+        {
+            Debug.Log("Welcome aboard, " + crewmateName + " !");
+        }
+        GenerateCrewmateProperties();
 
-        // Output the name and hobby in the console
-        Debug.Log("Name: " + name + ", Hobby: " + hobby);
     }
 
-    private string GetRandomImagePath()
+    public void DenyCrewmateButton()
     {
-        string spritesFolderPath = "Sprites/Crewmates"; // Modify this if necessary
-        string[] imagePaths = Directory.GetFiles(spritesFolderPath, "*.png"); // Modify the file extension if using a different image format
-        string randomImagePath = imagePaths[Random.Range(0, imagePaths.Length)];
-        return randomImagePath;
-    }
 
-    private Texture2D LoadTextureFromFile(string filePath)
-    {
-        byte[] fileData = File.ReadAllBytes(filePath);
-        Texture2D texture = new Texture2D(2, 2);
-        texture.LoadImage(fileData);
-        return texture;
+        if (isAlien)
+        {
+            //destroy alien character
+        }
+        else
+        {
+            Debug.Log(crewmateName + " was rejected.");
+        }
+        GenerateCrewmateProperties();
+
     }
 }
