@@ -36,7 +36,7 @@ public class Crewmate : MonoBehaviour
 
     private void GenerateCrewmateProperties()
     {
-        // 1/4 chance of being an alien????
+        
         isAlien = Random.value < 0.25f;
 
         crewmateName = GenerateRandomName();
@@ -81,7 +81,7 @@ public class Crewmate : MonoBehaviour
         }
         else
         {
-            Debug.Log("Welcome aboard, " + crewmateName + " !");
+            Debug.Log("Welcome aboard, " + crewmateName + "!");
             //add crewmate to ship
         }
         GenerateCrewmateProperties();
