@@ -14,7 +14,7 @@ public class Crewmate : MonoBehaviour
     public int maxCrew = 10;
 
     // Human hobbies
-    private string[] humanHobbies = { "Reading", "Writing", "Painting", "Sport", "Cooking", "Film" };
+    private static string[] humanHobbies = { "Reading", "Writing", "Painting", "Sport", "Cooking", "Film" };
     // Alien hobbies
     private string[] alienHobbies = { "Assimilating", "Synthesizing", "Breathing", "Smelling", "Taxidermy", "Fascism" };
 
@@ -24,7 +24,7 @@ public class Crewmate : MonoBehaviour
     private string[] humanSurnames = { "Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson", "Martinez", "Anderson", "Taylor", "Thomas", "Hernandez", "Moore", "Martin", "Jackson", "Thompson", "White" };
 
     // Alien names
-    private string[] alienFirstNames = { "Enma", "LiAm", "Oilvia", "peter", "Avva", "IsabeIIa", "Soophia", "MIa", "Sharlotte", "AmeIia", "Harber", "Micheal", "iacob", "EmiIy", "elizabeth", "MiLa", "EIla", "avery", "R0n", "Chamilla" };
+    private string[] alienFirstNames = { "Enna", "LiAm", "Oilvia", "peter", "Avva", "IsabeIIa", "Soophia", "MIa", "Sharlotte", "AmeIia", "Harber", "Micheal", "iacob", "EmiIy", "elizabeth", "MiLa", "EIla", "avery", "R0n", "Chamilla" };
     private string[] alienSurnames = { "$mith", "jonson", "Milliams", "8rown", "J0nes", "Willer", "D@vis", "6arcia", "Bodriguez", "Wilzon", "Martines", "Ander$on", "TayIor", "Fhomas", "Hernanbez", "More", "Martin", "Jackson", "Thompson", "Whife" };
 
 
@@ -34,7 +34,7 @@ public class Crewmate : MonoBehaviour
         GenerateCrewmateProperties();
     }
 
-    private void GenerateCrewmateProperties()
+    public void GenerateCrewmateProperties()
     {
         
         isAlien = Random.value < 0.25f;
@@ -53,10 +53,16 @@ public class Crewmate : MonoBehaviour
 
     }
 
-    private string GetRandomHobbyFrom(string[] hobbies)
+    public static string GetRandomHobbyFrom(string[] hobbies)
     {
         int randomIndex = Random.Range(0, hobbies.Length);
         return hobbies[randomIndex];
+    }
+
+    public static string GetRandomHobbyFrom()
+    {
+        int randomIndex = Random.Range(0, humanHobbies.Length);
+        return humanHobbies[randomIndex];
     }
 
     private string GenerateRandomName()
@@ -70,36 +76,5 @@ public class Crewmate : MonoBehaviour
         {
             return humanFirstNames[rnd.Next(0, humanFirstNames.Length)] + " " +  humanSurnames[rnd.Next(0, humanSurnames.Length)];
         }
-    }
-
-    public void AcceptCrewmateButton()
-    {
-        if (isAlien)
-        {
-            hobby = GetRandomHobbyFrom(humanHobbies);
-            //destroy any human crewmates with the same hobby
-        }
-        else
-        {
-            Debug.Log("Welcome aboard, " + crewmateName + "!");
-            //add crewmate to ship
-        }
-        GenerateCrewmateProperties();
-
-    }
-
-    public void DenyCrewmateButton()
-    {
-
-        if (isAlien)
-        {
-            //destroy alien character
-        }
-        else
-        {
-            Debug.Log(crewmateName + " was rejected.");
-        }
-        GenerateCrewmateProperties();
-
     }
 }
