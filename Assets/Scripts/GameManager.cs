@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Ship ship;
     [SerializeField] private Crewmate crewmate;
+    [SerializeField] private Text crewmateNameText;
+    [SerializeField] private Text crewmateHobbyText;
     // Start is called before the first frame update
     void Start()
 
@@ -23,7 +26,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.Log("Welcome aboard, " + crewmate.crewmateName + "!");
-            //add crewmate to ship
+   
             ship.successfulCrewmates.Add(crewmate);
         }
         crewmate.GenerateCrewmateProperties();
@@ -35,7 +38,7 @@ public class GameManager : MonoBehaviour
 
         if (crewmate.isAlien)
         {
-            //destroy alien character
+            Debug.Log(crewmate.crewmateName + " was rejected.");
         }
         else
         {
@@ -43,5 +46,21 @@ public class GameManager : MonoBehaviour
         }
         crewmate.GenerateCrewmateProperties();
 
+    }
+
+    private void UpdateCrewmateUI(Crewmate crewmate)
+    {
+        crewmateNameText.text = "Crewmate Name: " + crewmate.crewmateName;
+
+        if (crewmate.isAlien)
+        {
+            string alienHobby = Crewmate.alienHobbies[Random.Range(0, Crewmate.alienHobbies.Length)];
+            crewmateHobbyText.text = "Crewmate Hobby: " + alienHobby;
+        }
+        else
+        {
+            string humanHobby = Crewmate.humanHobbies[Random.Range(0, Crewmate.humanHobbies.Length)];
+            crewmateHobbyText.text = "Crewmate Hobby: " + humanHobby;
+        }
     }
 }

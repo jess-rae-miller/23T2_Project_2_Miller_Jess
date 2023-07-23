@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,12 +9,10 @@ public class Crewmate : MonoBehaviour
     [SerializeField] public string hobby;
     [SerializeField] public bool isAlien;
 
-    public int maxCrew = 10;
-
     // Human hobbies
-    private static string[] humanHobbies = { "Reading", "Writing", "Painting", "Sport", "Cooking", "Film" };
+    public static string[] humanHobbies = { "Reading", "Writing", "Painting", "Sport", "Cooking", "Film" };
     // Alien hobbies
-    private string[] alienHobbies = { "Assimilating", "Synthesizing", "Breathing", "Smelling", "Taxidermy", "Fascism" };
+    public static string[] alienHobbies = { "Assimilating", "Synthesizing", "Breathing", "Being nice", "Taxidermy", "Fascism" };
 
     private System.Random rnd = new System.Random();
     // Human names
@@ -25,10 +21,9 @@ public class Crewmate : MonoBehaviour
 
     // Alien names
     private string[] alienFirstNames = { "Enna", "LiAm", "Oilvia", "peter", "Avva", "IsabeIIa", "Soophia", "MIa", "Sharlotte", "AmeIia", "Harber", "Micheal", "iacob", "EmiIy", "elizabeth", "MiLa", "EIla", "avery", "R0n", "Chamilla" };
-    private string[] alienSurnames = { "$mith", "jonson", "Milliams", "8rown", "J0nes", "Willer", "D@vis", "6arcia", "Bodriguez", "Wilzon", "Martines", "Ander$on", "TayIor", "Fhomas", "Hernanbez", "More", "Martin", "Jackson", "Thompson", "Whife" };
+    private string[] alienSurnames = { "$mith", "jonson", "Milliams", "8rown", "J0nes", "Willer", "D@vis", "6arcia", "Bodriguez", "Wilzon", "Mart1nes", "Ander$on", "TayIor", "Fhomas", "Hernanbez", "More", "M@rtin", "Jaokson", "Thowpson", "Whife" };
 
 
-    // Start is called before the first frame update
     void Start()
     {
         GenerateCrewmateProperties();
