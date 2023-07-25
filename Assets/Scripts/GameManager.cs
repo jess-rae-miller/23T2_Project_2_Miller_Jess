@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,30 +8,27 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private Ship ship;
     [SerializeField] private Crewmate crewmate;
-    [SerializeField] private Text crewmateNameText;
-    [SerializeField] private Text crewmateHobbyText;
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private TMP_Text crewmateNameText;
+    [SerializeField] private TMP_Text crewmateHobbyText;
 
-    {
-
-    }
-    
     public void AcceptCrewmateButton()
     {
         if (crewmate.isAlien)
         {
-            crewmate.hobby = Crewmate.GetRandomHobbyFrom();
-            //destroy any human crewmates with the same hobby
+            // Get a random human hobby
+            string randomHumanHobby = Crewmate.GetRandomHobbyFrom(humanHobbies);
+
+            // Destroy any human crewmates with the same hobby
+            Crewmate.DestroyHumanCrewmates(randomHumanHobby);
+
+            crewmate.hobby = randomHumanHobby;
         }
         else
         {
             Debug.Log("Welcome aboard, " + crewmate.crewmateName + "!");
-   
             ship.successfulCrewmates.Add(crewmate);
         }
         crewmate.GenerateCrewmateProperties();
-
     }
 
     public void DenyCrewmateButton()
@@ -48,19 +46,10 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void UpdateCrewmateUI(Crewmate crewmate)
+    // Update the UI Text elements when a crewmate applies to join the ship
+    public void UpdateCrewmateUI(Crewmate crewmate)
     {
-        crewmateNameText.text = "Crewmate Name: " + crewmate.crewmateName;
-
-        if (crewmate.isAlien)
-        {
-            string alienHobby = Crewmate.alienHobbies[Random.Range(0, Crewmate.alienHobbies.Length)];
-            crewmateHobbyText.text = "Crewmate Hobby: " + alienHobby;
-        }
-        else
-        {
-            string humanHobby = Crewmate.humanHobbies[Random.Range(0, Crewmate.humanHobbies.Length)];
-            crewmateHobbyText.text = "Crewmate Hobby: " + humanHobby;
-        }
+        string v = "Crewmate Name: " + crewmate.crewmateName;
+        crewmateNameText.text = v;
     }
 }
