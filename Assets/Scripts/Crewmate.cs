@@ -31,8 +31,8 @@ public class Crewmate : MonoBehaviour
 
     public void GenerateCrewmateProperties()
     {
-        //Aliens have a 25% of spawning
-        isAlien = Random.value < 0.25f;
+        //Aliens have a 40% of spawning
+        isAlien = Random.value < 0.4f;
 
         crewmateName = GenerateRandomName();
         
@@ -48,17 +48,12 @@ public class Crewmate : MonoBehaviour
 
     }
 
-    public static string GetRandomHobbyFrom(string[] hobbies)
+    public string GetRandomHobbyFrom(string[] hobbies)
     {
         int randomIndex = Random.Range(0, hobbies.Length);
         return hobbies[randomIndex];
     }
 
-    public static string GetRandomHobbyFrom()
-    {
-        int randomIndex = Random.Range(0, humanHobbies.Length);
-        return humanHobbies[randomIndex];
-    }
     //Searches the list of random names and assigns either to a human or alien
     private string GenerateRandomName()
     {
@@ -72,34 +67,5 @@ public class Crewmate : MonoBehaviour
             return humanFirstNames[rnd.Next(0, humanFirstNames.Length)] + " " +  humanSurnames[rnd.Next(0, humanSurnames.Length)];
         }
     }
-    public static void DestroyHumanCrewmates(string randomHobby)
-    {
-        // Find all the human crewmates on the ship
-        Crewmate[] allCrewmates = FindObjectsOfType<Crewmate>();
-        List<Crewmate> humanCrewmates = new List<Crewmate>();
-
-        foreach (Crewmate crewmate in allCrewmates)
-        {
-            if (!crewmate.isAlien)
-            {
-                humanCrewmates.Add(crewmate);
-            }
-        }
-
-        // Check if there are any human crewmates with the random hobby
-        List<Crewmate> crewmatesToDestroy = new List<Crewmate>();
-        foreach (Crewmate humanCrewmate in humanCrewmates)
-        {
-            if (humanCrewmate.hobby == randomHobby)
-            {
-                crewmatesToDestroy.Add(humanCrewmate);
-            }
-        }
-
-        // Destroy the human crewmates with the random hobby
-        foreach (Crewmate crewmateToDestroy in crewmatesToDestroy)
-        {
-            Destroy(crewmateToDestroy.gameObject);
-        }
-    }
+    
 }
