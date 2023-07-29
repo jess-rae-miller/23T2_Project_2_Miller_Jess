@@ -18,9 +18,4 @@ public class Ship : MonoBehaviour
         //Returning hobby
         return randomCrewmate.hobby;
     }
-    public string GetRandomHobbyFrom(string[] hobbies)
-    {
-        int randomIndex = Random.Range(0, hobbies.Length);
-        return hobbies[randomIndex];
-    }
 }

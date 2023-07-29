@@ -12,7 +12,7 @@ public class Crewmate : MonoBehaviour
     // Human hobbies
     [SerializeField] public static string[] humanHobbies = { "Reading", "Writing", "Painting", "Sport", "Cooking", "Film" };
     // Alien hobbies
-    public static string[] alienHobbies = { "Assimilating", "Synthesizing", "Breathing", "Being nice", "Taxidermy", "Fascism" };
+    public static string[] alienHobbies = { "Assimilating", "Synthesizing", "Breathing", "Consuming", "Taxidermy", "Fascism", "World Domination" };
 
     private System.Random rnd = new System.Random();
     // Human names
@@ -31,7 +31,7 @@ public class Crewmate : MonoBehaviour
 
     public void GenerateCrewmateProperties()
     {
-        //Aliens have a 40% of spawning
+        //Aliens have a 40% chance of spawning
         isAlien = Random.value < 0.4f;
 
         crewmateName = GenerateRandomName();
@@ -48,6 +48,7 @@ public class Crewmate : MonoBehaviour
 
     }
 
+    //Searches the list of either human or alien hobbys and randomly assigns them respectively
     public string GetRandomHobbyFrom(string[] hobbies)
     {
         int randomIndex = Random.Range(0, hobbies.Length);
